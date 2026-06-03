@@ -2,13 +2,13 @@
 
 > 제출물 ④(README): 프로젝트 개요 + 어떤 **MCP Tool 기능**을 어떻게 쓰는지 + 실행 방법(환경·의존성).
 
-RT-DETR(CNN-Transformer 하이브리드 객체검출기)·XAI(Grad-CAM++/AttnLRP/Visual Precision Search)·표현 기하 해석·반도체 결함검출 지식을
+객체검출(Object Detection)과 XAI(설명가능 AI) 연구 지식을
 담은 **markdown LLM Wiki** 를, **MCP(Model Context Protocol) 서버**로 노출해 AI 에이전트가 질의·갱신하고,
-사람은 **웹 GUI** 로 시각화·검색·질의하는 도구. 콘텐츠는 실제 논문 7편(RT-DETR·Faster R-CNN·Grad-CAM++·AttnLRP·Visual Precision Search·When Models Manipulate Manifolds·Understanding Robustness Lottery)을 정독해 작성했다.
+사람은 **웹 GUI** 로 시각화·검색·질의하는 도구.
 
 ![MVP 스크린샷](mvp/mvp_screenshot.png)
 
-> **ℹ️ 원본 논문 PDF는 저작권·용량 문제로 이 저장소에 포함하지 않습니다.** 각 위키 페이지 하단 "참고/출처"에 서지정보와 arXiv/DOI를 인용했습니다. 로컬에서 PDF 기반 재현이 필요하면 `WikiTool_MCP/` 루트에 7편 PDF를 직접 두면 됩니다(`.gitignore`로 제외됨).
+> **ℹ️ 참고 문헌 원문 PDF는 저작권·용량 문제로 이 저장소에 포함하지 않습니다.** 각 위키 페이지 하단 "참고/출처"에 서지정보와 arXiv/DOI를 인용했습니다(`.gitignore`로 제외).
 
 ---
 
@@ -41,7 +41,7 @@ py server/wiki_core.py             # 통계 + 'rt-detr xai' 검색 결과 출력
 ## 1. What · Why · How
 
 - **What**: 객체검출 연구 지식의 단일 출처(markdown + YAML front-matter). 페이지 11 + 용어 3.
-- **Why**: 결함 클래스·XAI 해석 노하우가 빠르게 늘어 **검색·갱신 가능한** 구조가 필요. LLM 에이전트가
+- **Why**: 모델·XAI 해석 노하우가 빠르게 늘어 **검색·갱신 가능한** 구조가 필요. LLM 에이전트가
   표준 방식(MCP)으로 읽고 쓰게 하면, 사람과 에이전트가 같은 지식 베이스를 공유한다.
 - **How**: `wiki_core`(도메인 로직)를 `mcp_server`(에이전트용)와 `app`(사람용 GUI)이 **공유** →
   단일 진실 출처(single source of truth). 쓰기는 스키마 검증 + 저널 기록으로 무결성 보장.
