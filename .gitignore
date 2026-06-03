@@ -1,0 +1,18 @@
+# 원본 논문 PDF (루트 한정) — 저작권/용량 이유로 저장소에서 제외
+/*.pdf
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# IDE / 도구
+.claude/
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store

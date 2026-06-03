@@ -1,0 +1,36 @@
+# Object Detection LLM Wiki — RT-DETR · XAI · 반도체 결함검출
+
+> RT-DETR(CNN-Transformer 하이브리드 검출기)과 XAI(GradCAM++/AttnLRP/Visual Precision Search)·표현 기하 해석을 반도체 이미지 결함 검출에 적용하는 연구 지식 베이스. MCP Wiki Tool을 통해 LLM 에이전트가 질의·갱신한다.
+
+## 운영 메타
+
+- [AGENTS.md](AGENTS.md): 에이전트 운영 규칙(read/write 모드, 권한)
+- [SCHEMA.md](SCHEMA.md): 페이지 front-matter·본문 형식
+- [_meta/source_index.md](_meta/source_index.md): 원본 자료 ↔ 페이지 매핑
+
+## Concept
+
+- [01. Object Detection 개요](pages/01-object-detection-overview.md): 검출 과제 정의와 two-stage/one-stage/DETR 계보
+- [03. DETR와 Set Prediction](pages/03-detr-and-set-prediction.md): Hungarian 이분 매칭 기반 NMS-free 원리
+- [10. Manifold 기하 해석](pages/10-manifold-geometry-interpretability.md): 특징 다양체 관점의 mechanistic 해석
+- [11. Pruning 강건성의 기하](pages/11-pruning-robustness-geometry.md): Angle/Norm/Margin 기하로 본 pruning·robustness
+
+## Model
+
+- [02. RT-DETR](pages/02-rt-detr.md): CNN-Transformer 하이브리드 실시간 검출기(본 연구 핵심 모델)
+- [09. Faster R-CNN과 Two-stage 검출](pages/09-faster-rcnn-two-stage.md): RPN·anchor·NMS 기준선
+
+## Method (XAI)
+
+- [04. Object Detection을 위한 XAI](pages/04-xai-for-object-detection.md): 검출기 설명가능성 분류와 멀티 XAI 전략
+- [05. Grad-CAM++](pages/05-gradcam-plus-plus.md): 그래디언트 기반 클래스 히트맵
+- [06. LRP와 AttnLRP](pages/06-lrp.md): 보존적 관련성 역전파(Transformer 확장)
+- [07. Visual Precision Search](pages/07-visual-precision-search.md): 검출용 gradient-free 블랙박스 XAI
+
+## Application
+
+- [08. 반도체 이미지 결함 검출](pages/08-semiconductor-defect-detection.md): RT-DETR + 멀티 XAI 감사 워크플로우
+
+## Glossary
+
+- [iou](glossary/iou.md) · [map](glossary/map.md) · [nms](glossary/nms.md)
