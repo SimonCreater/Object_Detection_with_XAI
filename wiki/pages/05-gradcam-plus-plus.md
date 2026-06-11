@@ -9,7 +9,7 @@ created: 2026-06-03
 updated: 2026-06-03
 source:
   - type: pdf
-    ref: "Grad-cam++.pdf"
+    ref: "raw/Grad-cam++.pdf"
     cite: "Chattopadhyay, Sarkar, Howlader, Balasubramanian, Grad-CAM++, arXiv:1710.11063v3 (2018)"
 related:
   - 04-xai-for-object-detection
@@ -63,6 +63,6 @@ Grad-CAM은 특징맵 `A^k`에 대한 클래스 점수 `y^c`의 그래디언트�
 
 ## 참고 / 출처
 
-- 원본 논문: [Grad-cam++.pdf](../../Grad-cam++.pdf)
+- 원본 논문: [Grad-cam++.pdf](../../raw/Grad-cam++.pdf)
 - Chattopadhyay, Sarkar, Howlader, Balasubramanian, "Grad-CAM++: Improved Visual Explanations for Deep Convolutional Networks", arXiv:1710.11063v3, 2018.
 - Selvaraju et al., "Grad-CAM" (2017) — 일반화 대상이 된 원조 기법.

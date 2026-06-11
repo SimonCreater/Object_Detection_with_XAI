@@ -1,6 +1,6 @@
 # AGENTS.md — 객체검출 LLM Wiki 운영 규칙
 
-이 위키는 **MCP Wiki Tool**(`../server/mcp_server.py`)을 통해 LLM 에이전트가 질의·갱신한다.
+이 위키는 **MCP Wiki Tool**(`../tools/mcp_server.py`)을 통해 LLM 에이전트가 질의·갱신한다.
 사람이 직접 파일을 고치기보다, 에이전트가 아래 규칙 하에 MCP 툴을 호출하는 것이 정상 경로다.
 
 ## 1. User Query (read) 모드

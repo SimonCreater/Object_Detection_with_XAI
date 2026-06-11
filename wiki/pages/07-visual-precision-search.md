@@ -9,7 +9,7 @@ created: 2026-06-03
 updated: 2026-06-03
 source:
   - type: pdf
-    ref: "Interpreting Object-level Foundation Models via Visual Precision Search.pdf"
+    ref: "raw/Interpreting Object-level Foundation Models via Visual Precision Search.pdf"
     cite: "Chen et al., Interpreting Object-level Foundation Models via Visual Precision Search, arXiv:2411.16198v4 (2025)"
 related:
   - 04-xai-for-object-detection
@@ -69,5 +69,5 @@ VPS는 모델 내부를 보지 않는 **블랙박스** 방법이라 [[rt-detr]]�
 
 ## 참고 / 출처
 
-- 원본 논문: [Interpreting Object-level Foundation Models via Visual Precision Search.pdf](../../Interpreting%20Object-level%20Foundation%20Models%20via%20Visual%20Precision%20Search.pdf)
+- 원본 논문: [Interpreting Object-level Foundation Models via Visual Precision Search.pdf](../../raw/Interpreting%20Object-level%20Foundation%20Models%20via%20Visual%20Precision%20Search.pdf)
 - Chen, Liang, Li, Liu, Li, Huang, Zhang, Cao, "Interpreting Object-level Foundation Models via Visual Precision Search", arXiv:2411.16198v4, 2025. (코드: github.com/RuoyuChen10/VPS)

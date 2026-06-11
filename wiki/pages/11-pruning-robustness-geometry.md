@@ -9,7 +9,7 @@ created: 2026-06-03
 updated: 2026-06-03
 source:
   - type: pdf
-    ref: "“Understanding Robustness Lottery” A Geometric.pdf"
+    ref: "raw/“Understanding Robustness Lottery” A Geometric.pdf"
     cite: "Li et al. (Utah SCI / LLNL), “Understanding Robustness Lottery”: A Geometric Visual Comparative Analysis of Neural Network Pruning Approaches, IEEE TVCG (2024), DOI 10.1109/TVCG.2024.3514996"
 related:
   - 10-manifold-geometry-interpretability
@@ -67,6 +67,6 @@ related:
 
 ## 참고 / 출처
 
-- 원본 논문: [“Understanding Robustness Lottery” A Geometric.pdf](../../%E2%80%9CUnderstanding%20Robustness%20Lottery%E2%80%9D%20A%20Geometric.pdf)
+- 원본 논문: [“Understanding Robustness Lottery” A Geometric.pdf](../../raw/%E2%80%9CUnderstanding%20Robustness%20Lottery%E2%80%9D%20A%20Geometric.pdf)
 - Z. Li, S. Liu, X. Yu, K. Bhavya, J. Cao, J. D. Diffenderfer, P.-T. Bremer, V. Pascucci, "“Understanding Robustness Lottery”: A Geometric Visual Comparative Analysis of Neural Network Pruning Approaches", IEEE Transactions on Visualization and Computer Graphics, 2024. DOI 10.1109/TVCG.2024.3514996.
 - 관련: Frankle & Carbin, "Lottery Ticket Hypothesis" (2019); Diffenderfer & Kailkhura, "Multi-Prize Lottery Tickets" (2021); Hendrycks & Dietterich, "Benchmarking … Common Corruptions (ImageNet-C)" (2019).

@@ -6,8 +6,8 @@ MCP 프로토콜의 tools/list, tools/call 을 통해 아래 6개 wiki 툴을 �
 실제 파일 입출력 로직은 wiki_core 에 위임한다(전송계층 ↔ 도메인로직 분리).
 
 실행:
-    py server/mcp_server.py            # stdio 전송 (Claude Desktop / CLI 가 자식 프로세스로 구동)
-    py server/mcp_server.py --http     # streamable-http 전송 (127.0.0.1:8000/mcp)
+    py tools/mcp_server.py            # stdio 전송 (Claude Desktop / CLI 가 자식 프로세스로 구동)
+    py tools/mcp_server.py --http     # streamable-http 전송 (127.0.0.1:8000/mcp)
 
 노출 툴(읽기 3 + 쓰기 3):
     wiki_search, wiki_get, wiki_list      (read)

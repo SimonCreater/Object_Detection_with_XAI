@@ -17,9 +17,9 @@
 
 ## Round 1 — 지식 도메인 선택
 
-- **결정**: CSE-3308 대신 *Object Detection(RT-DETR·XAI·반도체 결함검출)* 을 도메인으로 채택.
+- **결정**: 수업 주제 대신 *Object Detection(RT-DETR·XAI·반도체 결함검출)* 을 도메인으로 채택.
 - **근거**: 강의 주제 자체를 위키화하면 평가가 엄격해질 수 있다는 우려 + 연구자가 실제 다루는 살아있는 지식이라 갱신 수요가 실재.
-- **대안**: (a) CSE-3308 그대로, (b) 일반 CV 전반.
+- **대안**: (a) 수업 주제 그대로, (b) 일반 CV 전반.
 - **폐기 이유**: (a) 평가 리스크, (b) 범위가 넓어 단일 출처의 응집도 저하.
 
 ## Round 2 — 콘텐츠 vs 인프라, 무엇을 먼저?
@@ -80,6 +80,23 @@
 - **대안**: 일반 지식 콘텐츠 유지 + 인용만 보강.
 - **폐기 이유**: 근거 없는 수치/주장(예: TCAV 페이지)은 위키 신뢰도를 훼손. append-only 저널 원칙상 본 라운드로 변경 이력을 명시.
 
+## Round 10 — 하네스·위키·시각화 도구의 단일 제품 통합
+
+- **결정**: 저장소를 "clone 하면 누구나 자기 LLM Wiki 를 만들 수 있는" 통합 제품으로 재구성.
+  - **하네스 신설**: `RULES.md`(운영지침) + `CLAUDE.md`(컨텍스트) + PostToolUse **Hook**(`.claude/settings.json`,
+    쓰기 직후 `wiki_core.py --validate` 자동 실행) + **Skill**(`/new-wiki-page` 자료 통합 절차) + **Subagent**(`wiki-editor`).
+  - **자료 투입구 신설**: `raw/` — 사용자가 원문(PDF/노트)을 넣고 에이전트에게 통합을 요청하는 입구.
+    원문 PDF 는 저작권·용량 문제로 `.gitignore`(`raw/*.pdf`) 처리, `source_index` 로 출처 추적.
+  - **폴더 정리**: `server/` → `tools/` (MCP 서버 + 뷰어 + 코어), `demo/` 신설(실사용 캡처),
+    `.mcp.json`(프로젝트 스코프) 추가로 clone 직후 Claude Code 가 MCP 서버를 자동 인식.
+  - **검증 게이트 신설**: `wiki_core.validate()` — front-matter 파싱·필수필드·category·slug·related 해석을
+    전수 검사, 실패 시 exit 2. Hook 과 CI 에서 같은 명령을 재사용.
+- **근거**: Round 5~6 의 "확률적 출력에 결정론적 게이트" 원칙을 문서 권고에서 **하네스 강제**로 격상.
+  처음 보는 사용자의 온보딩 경로(투입→통합→검증→확인)를 README 30분 가이드로 고정.
+- **대안**: (a) 기존 구조 유지 + README 만 보강, (b) 검증을 별도 스크립트로 분리.
+- **폐기 이유**: (a) Skill/Hook 없이는 에이전트 행동이 재현되지 않음, (b) 게이트는 코어와 같은
+  파서를 써야 검증-실데이터 불일치가 없음(단일 진실 출처).
+
 ---
 
 ## 결과 요약
@@ -87,9 +104,10 @@
 | 라운드 | 산출물 |
 |---|---|
 | 1~2 | `wiki/` 페이지(초기 8 → R9에서 11) + 용어 3 + 메타 |
-| 3~4 | `server/wiki_core.py`, `server/mcp_server.py` (6 MCP 툴) |
+| 3~4 | `tools/wiki_core.py`, `tools/mcp_server.py` (6 MCP 툴) |
 | 5~6 | `docs/04_agent_spec.md` 권한 모델, `_meta/journal.md` 자동 저널 |
-| 7~8 | `server/app.py` GUI, `mvp/` 스크린샷·PDF |
+| 7~8 | `tools/app.py` GUI, `mvp/` 스크린샷·PDF |
 | 9 | 실제 논문 7편 정독 → 콘텐츠 재정초(11 페이지), TCAV→VPS 대체 |
+| 10 | 하네스(RULES·Hook·Skill·Subagent) + `raw/` 투입구 + `tools/` 정리 + 검증 게이트 + `.mcp.json` |
 
 > 본 저널은 append-only 원칙에 따라, 이후 설계 변경 시 **위에 라운드를 추가**한다(기존 항목 수정 금지).

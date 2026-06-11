@@ -1,5 +1,6 @@
-# 원본 논문 PDF (루트 한정) — 저작권/용량 이유로 저장소에서 제외
+# 원문 자료(저작권/용량) — raw/ 의 PDF 등 원문은 저장소에서 제외 (README·예시 노트는 포함)
 /*.pdf
+raw/*.pdf
 
 # Python
 __pycache__/
@@ -8,8 +9,10 @@ __pycache__/
 .venv/
 venv/
 
+# Claude Code 개인 설정만 제외 (하네스 Hook/Skill/Subagent 는 커밋 대상)
+.claude/settings.local.json
+
 # IDE / 도구
-.claude/
 .vscode/
 .idea/
 

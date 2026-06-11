@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "objdet-wiki-gui",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["tools/app.py"],
+      "port": 5000
+    }
+  ]
+}

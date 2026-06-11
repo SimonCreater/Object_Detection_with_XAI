@@ -10,7 +10,7 @@ app.py — 객체검출 LLM Wiki 의 MVP 웹 GUI (Flask).
 이 GUI 는 MCP 서버와 같은 wiki_core 를 공유하므로, 에이전트가 MCP 로 보는 데이터와
 사람이 GUI 로 보는 데이터가 항상 일치한다(single source of truth).
 
-실행:  py server/app.py    →  http://127.0.0.1:5000
+실행:  py tools/app.py    →  http://127.0.0.1:5000
 """
 
 from __future__ import annotations

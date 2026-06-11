@@ -9,7 +9,7 @@ created: 2026-06-03
 updated: 2026-06-03
 source:
   - type: pdf
-    ref: "RT-DETR.pdf"
+    ref: "raw/RT-DETR.pdf"
     cite: "Zhao et al., DETRs Beat YOLOs on Real-time Object Detection, arXiv:2304.08069v3 (2024)"
 related:
   - 01-object-detection-overview
@@ -108,5 +108,5 @@ RT-DETR은 CNN 백본(국소)과 attention(전역)이 섞여 있다. **CNN 단�
 
 ## 참고 / 출처
 
-- 원본 논문: [RT-DETR.pdf](../../RT-DETR.pdf)
+- 원본 논문: [RT-DETR.pdf](../../raw/RT-DETR.pdf)
 - Zhao, Lv, Xu, Wei, Wang, Dang, Liu, Chen, "DETRs Beat YOLOs on Real-time Object Detection", arXiv:2304.08069v3, 2024. (Baidu Inc. / Peking University)

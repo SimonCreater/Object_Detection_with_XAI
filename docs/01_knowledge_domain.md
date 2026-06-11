@@ -1,14 +1,14 @@
 # 지식 도메인 정의서 — Object Detection (RT-DETR · XAI · 반도체 결함검출)
 
 > 제출물 ①: 본 LLM Wiki Tool 이 다루는 **지식 도메인**을 정의하는 문서.
-> (강의 주제 CSE-3308 자체가 아니라, 연구에서 실제로 다루는 도메인을 대상으로 한다.)
+> (수업 주제 자체가 아니라, 연구에서 실제로 다루는 도메인을 대상으로 한다.)
 
 ## 1. 도메인 한 줄 정의
 
 **RT-DETR(CNN-Transformer 하이브리드 객체검출기)** 로 **반도체 이미지의 미세 결함**을 검출하고,
 그 판단 근거를 **XAI(Grad-CAM++ · AttnLRP · Visual Precision Search)** 와 **표현 기하 해석**으로 검증·감사하는 연구 지식 영역.
 
-## 2. 왜 이 도메인인가 (Why this domain, not CSE-3308)
+## 2. 왜 이 도메인인가 (Why this domain)
 
 - 강의 주제(Agentic Coding)를 그대로 위키화하면 평가가 엄격해질 수 있어, **연구자 본인이 실제 수행 중인 주제**를 택했다.
 - 이 도메인은 (a) 빠르게 늘어나는 결함 클래스·XAI 해석 노하우, (b) 모델·기법·응용이 얽힌 다층 지식이라
@@ -57,5 +57,5 @@
 
 ## 7. 출처
 
-- `WikiTool_MCP/` 루트의 실제 논문 7편을 정독해 작성: RT-DETR, Faster R-CNN, Grad-CAM++, AttnLRP, Visual Precision Search, When Models Manipulate Manifolds, "Understanding Robustness Lottery" — 각 페이지 하단 "참고/출처" 참조.
+- `raw/` 의 실제 논문 7편을 정독해 작성: RT-DETR, Faster R-CNN, Grad-CAM++, AttnLRP, Visual Precision Search, When Models Manipulate Manifolds, "Understanding Robustness Lottery" — 각 페이지 하단 "참고/출처" 참조.
 - 도메인 노트: 반도체 결함검출 연구 진행 기록(01·03·04·08 페이지).

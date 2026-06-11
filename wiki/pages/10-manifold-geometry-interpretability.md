@@ -9,7 +9,7 @@ created: 2026-06-03
 updated: 2026-06-03
 source:
   - type: pdf
-    ref: "When Models Manipulate Manifolds.pdf"
+    ref: "raw/When Models Manipulate Manifolds.pdf"
     cite: "Gurnee et al. (Anthropic), When Models Manipulate Manifolds: The Geometry of a Counting Task, arXiv:2601.04480v1 (2026)"
 related:
   - 04-xai-for-object-detection
@@ -54,5 +54,5 @@ dictionary feature(SAE류 이산 feature)는 메커니즘을 **발견**하는 �
 
 ## 참고 / 출처
 
-- 원본 논문: [When Models Manipulate Manifolds.pdf](../../When%20Models%20Manipulate%20Manifolds.pdf)
+- 원본 논문: [When Models Manipulate Manifolds.pdf](../../raw/When%20Models%20Manipulate%20Manifolds.pdf)
 - Gurnee, Ameisen, Kauvar, Tarng, Pearce, Olah, Batson (Anthropic), "When Models Manipulate Manifolds: The Geometry of a Counting Task", arXiv:2601.04480v1, 2026. (Transformer Circuits, 2025-10-21)

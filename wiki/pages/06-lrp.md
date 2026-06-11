@@ -9,7 +9,7 @@ created: 2026-06-03
 updated: 2026-06-03
 source:
   - type: pdf
-    ref: "AttnLRP.pdf"
+    ref: "raw/AttnLRP.pdf"
     cite: "Achtibat et al., AttnLRP: Attention-Aware Layer-Wise Relevance Propagation for Transformers, arXiv:2402.05602v2 (2024)"
 related:
   - 04-xai-for-object-detection
@@ -74,6 +74,6 @@ LRP는 신경망을 층별 DAG로 보고, 각 뉴런을 함수 노드로 **개�
 
 ## 참고 / 출처
 
-- 원본 논문: [AttnLRP.pdf](../../AttnLRP.pdf)
+- 원본 논문: [AttnLRP.pdf](../../raw/AttnLRP.pdf)
 - Achtibat, Hatefi, Dreyer, Jain, Wiegand, Lapuschkin, Samek, "AttnLRP: Attention-Aware Layer-Wise Relevance Propagation for Transformers", arXiv:2402.05602v2, 2024.
 - Bach et al., "On Pixel-Wise Explanations … by LRP" (2015); Montavon et al., "LRP: An Overview" (2019) — LRP 원리.

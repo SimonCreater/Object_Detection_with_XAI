@@ -1,166 +1,150 @@
-# Object Detection LLM Wiki — MCP 기반 Wiki Tool
+# LLM Wiki Tool — 하네스 + LLM Wiki + 시각화 도구 통합
 
-> 제출물 ④(README): 프로젝트 개요 + 어떤 **MCP Tool 기능**을 어떻게 쓰는지 + 실행 방법(환경·의존성).
+객체검출(Object Detection)·XAI 연구 지식을 담은 **markdown LLM Wiki** 를,
+**MCP 서버**(AI 에이전트용)와 **웹 뷰어**(사람용)로 함께 제공하고,
+**하네스**(RULES + Hook + Skill + Subagent)가 에이전트의 작업 품질을 보증하는 통합 도구입니다.
 
-객체검출(Object Detection)과 XAI(설명가능 AI) 연구 지식을
-담은 **markdown LLM Wiki** 를, **MCP(Model Context Protocol) 서버**로 노출해 AI 에이전트가 질의·갱신하고,
-사람은 **웹 GUI** 로 시각화·검색·질의하는 도구.
+> 처음 보는 사람도 clone 후 **30분 안에** 자기 자료 1건으로 첫 위키 페이지를 만들고 화면에서 확인할 수 있습니다 — [3절](#3-30분-온보딩--내-자료로-첫-위키-페이지-만들기).
 
-![MVP 스크린샷](mvp/mvp_screenshot.png)
-
-> **ℹ️ 참고 문헌 원문 PDF는 저작권·용량 문제로 이 저장소에 포함하지 않습니다.** 각 위키 페이지 하단 "참고/출처"에 서지정보와 arXiv/DOI를 인용했습니다(`.gitignore`로 제외).
+![실사용 화면](demo/demo_screenshot.png)
 
 ---
 
-## 0. Quick Start (사용 방법 요약)
+## 1. 구성 요소 (Package)
 
-```powershell
-# 1) 의존성 설치 (Windows: python 별칭이 깨졌으면 py 런처 사용)
-py -m pip install -r requirements.txt
-
-# 2-A) 웹 GUI(MVP) 실행 — 사람이 보는 화면
-py server/app.py
-#   → 브라우저에서 http://127.0.0.1:5000 접속 (검색·페이지 뷰·챗봇)
-
-# 2-B) MCP 서버 실행 — AI 에이전트(Claude Desktop/Code 등)가 붙는 대상
-py server/mcp_server.py            # stdio (MCP 클라이언트가 자식 프로세스로 구동)
-py server/mcp_server.py --http     # HTTP: http://127.0.0.1:8000/mcp
-
-# 3) 동작 점검(스모크 테스트) — LLM/네트워크 불필요
-py server/wiki_core.py             # 통계 + 'rt-detr xai' 검색 결과 출력
-```
-
-- **사람**: `app.py`(Flask) → 사이드바에서 페이지 열람, 상단 검색, 우측 챗봇(읽기 전용 retrieval) 질의.
-- **AI 에이전트**: `mcp_server.py`가 6개 MCP 툴(`wiki_search/get/list` = 읽기, `wiki_create/update/append` = 쓰기)을 노출. 자세한 연결 예시는 [6.5절](#65-mcp-클라이언트-연결-예-claude-desktop-mcpservers).
-- 두 진입점은 같은 `server/wiki_core.py`를 공유하므로 **에이전트가 쓰면 GUI에도 즉시 반영**됩니다.
-
-상세 환경·설치·MCP 클라이언트 설정은 [6절](#6-실행-방법-환경--의존성)을 참고하세요.
-
----
-
-## 1. What · Why · How
-
-- **What**: 객체검출 연구 지식의 단일 출처(markdown + YAML front-matter). 페이지 11 + 용어 3.
-- **Why**: 모델·XAI 해석 노하우가 빠르게 늘어 **검색·갱신 가능한** 구조가 필요. LLM 에이전트가
-  표준 방식(MCP)으로 읽고 쓰게 하면, 사람과 에이전트가 같은 지식 베이스를 공유한다.
-- **How**: `wiki_core`(도메인 로직)를 `mcp_server`(에이전트용)와 `app`(사람용 GUI)이 **공유** →
-  단일 진실 출처(single source of truth). 쓰기는 스키마 검증 + 저널 기록으로 무결성 보장.
-
-## 2. 디렉토리 구조
+| 구성 | 위치 | 내용 |
+|---|---|---|
+| **하네스** | `RULES.md` `CLAUDE.md` `.claude/` | Agent 운영지침 + PostToolUse **Hook**(쓰기 후 자동 스키마 검증) + **Skill**(`/new-wiki-page` 자료 통합 절차) + **Subagent**(`wiki-editor`) |
+| **LLM Wiki** | `raw/` `wiki/` | 자료 투입구(raw) · 위키 본체(pages 11 + glossary 3) · 스키마(`wiki/SCHEMA.md`) · 에이전트 안내(`wiki/AGENTS.md`, `llms.txt`) |
+| **시각화 도구** | `tools/` | `mcp_server.py`(MCP 6툴, 에이전트 접근) + `app.py`(웹 뷰어·검색·챗봇) + `wiki_core.py`(공유 로직·검증 게이트) |
+| **데모** | `demo/` | 실제 지식베이스가 렌더링된 화면 캡처 |
+| **문서** | `docs/` | 지식 도메인 정의 · 의사결정 저널 · PRD · 에이전트 SPEC |
 
 ```
 WikiTool_MCP/
-├── README.md                    ← (이 파일) 제출물 ④
-├── requirements.txt             ← 의존성
-├── docs/
-│   ├── 01_knowledge_domain.md   ← 제출물 ① 지식 도메인 정의
-│   ├── 02_decision_journal.md   ← 제출물 ② 의사결정 저널(Journal 패턴 적용)
-│   ├── 03_PRD_spec.md           ← 제출물 ③ PRD/사양
-│   └── 04_agent_spec.md         ← 에이전트 역할·권한·허용기능 SPEC
-├── server/
-│   ├── wiki_core.py             ← 전송계층 독립 도메인 로직(검색/CRUD/저널)
-│   ├── mcp_server.py            ← FastMCP 서버 (Tool ↔ AI Agent 다리)
-│   └── app.py                   ← Flask 웹 GUI (뷰어 + 검색 + 챗봇)
-├── wiki/                        ← 위키 콘텐츠(markdown)
-│   ├── AGENTS.md · SCHEMA.md · llms.txt
-│   ├── pages/01~11*.md · glossary/{iou,map,nms}.md
-│   └── _meta/{source_index,journal}.md
-└── mvp/                         ← MVP 스크린샷(PNG) + PDF
+├── RULES.md / CLAUDE.md      ← 하네스: 에이전트 운영지침 + 프로젝트 컨텍스트
+├── .claude/                  ← 하네스: settings.json(Hook) · skills/new-wiki-page · agents/wiki-editor
+├── .mcp.json                 ← Claude Code 가 자동 인식하는 MCP 서버 등록(프로젝트 스코프)
+├── raw/                      ← 자료 투입구 (당신의 PDF·노트를 여기에)
+├── wiki/                     ← 위키 본체: pages/ glossary/ _meta/ + SCHEMA.md AGENTS.md llms.txt
+├── tools/                    ← wiki_core.py(로직·검증) · mcp_server.py(MCP) · app.py(웹 뷰어)
+├── demo/                     ← 실사용 스크린샷
+└── docs/                     ← 설계 문서 4종
 ```
 
-## 3. MCP Tool — 무엇을, 왜, 어떻게
+## 2. 설치 (환경 · 의존성)
 
-**MCP 서버가 곧 "Tool 과 AI Agent 를 잇는 다리"** 다. 에이전트는 MCP 프로토콜의 `tools/list`·`tools/call`
-로 아래 6개 툴을 표준 방식으로 호출한다. 실제 파일 I/O 는 `wiki_core` 가 담당(전송 ↔ 로직 분리).
+- **환경**: Python 3.10+ (3.13 검증). Windows 는 `py` 런처 기준, macOS/Linux 는 `py` → `python3` 로 읽으세요.
+- **의존성**: `fastmcp`, `flask`, `markdown`, `python-frontmatter` (requirements.txt)
+
+```powershell
+git clone <이 저장소 URL>
+cd WikiTool_MCP
+py -m pip install -r requirements.txt
+
+# 설치 확인 (LLM·네트워크 불필요)
+py tools/wiki_core.py              # 통계 + 샘플 검색 출력되면 OK
+py tools/wiki_core.py --validate   # "errors=0" + exit 0 이면 OK
+```
+
+## 3. 30분 온보딩 — 내 자료로 첫 위키 페이지 만들기
+
+**0–5분 | 위키 화면부터 확인**
+
+```powershell
+py tools/app.py
+```
+브라우저에서 **http://127.0.0.1:5000** → 사이드바에서 페이지 열람, 상단 검색, 우측 챗봇 질의.
+(이미 사용 가능한 위키 11페이지가 기본 제공됩니다)
+
+**5–10분 | 내 자료 투입**
+
+자료 1건(논문 PDF, 메모 .md/.txt)을 `raw/` 에 복사합니다. 연습용 예시 파일도 준비되어 있습니다: `raw/example_note.md`
+
+**10–25분 | 에이전트에게 통합 요청**
+
+저장소 루트에서 [Claude Code](https://claude.com/claude-code) 를 열고:
+
+```
+/new-wiki-page raw/example_note.md
+```
+
+또는 자연어로 — `raw에 넣은 example_note.md 위키 페이지로 통합해줘`
+
+에이전트가 Skill 절차(원문 정독 → 중복 검색 → 페이지 생성 → 스키마 검증 → 메타 갱신)를 수행하고
+새 페이지의 slug 를 보고합니다. 쓰기 직후 **Hook 이 자동으로 `--validate` 를 실행**해 스키마 위반을 차단합니다.
+
+**25–30분 | 결과 확인 (검증)**
+
+```powershell
+py tools/wiki_core.py --validate   # errors=0 확인
+py tools/app.py                    # http://127.0.0.1:5000 → 새 페이지가 사이드바·검색에 보이는지 확인
+```
+
+## 4. MCP Tool 목록과 동작
+
+`tools/mcp_server.py` 가 MCP 프로토콜(`tools/list`·`tools/call`)로 노출하는 6개 툴:
 
 | 툴 | 기능 | 권한 | 동작 방식 |
 |---|---|:---:|---|
-| `wiki_search(query, limit)` | 가중치 키워드 검색 | read | 제목5/슬러그4/요약3/태그3/본문1 점수 합산 후 상위 반환 |
-| `wiki_get(slug)` | 페이지 전체 조회 | read | 숫자prefix·alias·glossary 자동 해석 후 front-matter+본문 반환 |
-| `wiki_list(category, kind)` | 목록/필터 | read | 카테고리/종류 필터링한 요약 목록 |
-| `wiki_create(slug,title,summary,body,…)` | 새 페이지 | write | SCHEMA 필수필드·slug 규칙·중복 검증 → 파일 생성 → 저널 |
-| `wiki_update(slug,…)` | 부분 갱신 | write | 지정 필드만 덮어쓰고 `updated` 자동 갱신 → 저널 |
-| `wiki_append(slug,text,heading)` | 본문 추가 | write | 말미(또는 `## heading`)에 추가 → 저널 |
+| `wiki_search(query, limit)` | 키워드 검색 | read | 제목5/슬러그4/요약3/태그3/본문1 가중치 점수 상위 반환 |
+| `wiki_get(slug)` | 페이지 전체 조회 | read | 숫자prefix·alias·glossary 자동 해석 |
+| `wiki_list(category, kind)` | 목록/필터 | read | 카테고리·종류별 요약 목록 |
+| `wiki_create(slug,title,summary,body,…)` | 새 페이지 | write | 필수필드·slug·중복 검증 → 생성 → 저널 기록 |
+| `wiki_update(slug,…)` | 부분 갱신 | write | 지정 필드만 덮어쓰기, `updated` 자동 갱신 → 저널 |
+| `wiki_append(slug,text,heading)` | 본문 추가 | write | 말미/지정 섹션에 추가 → 저널 |
 
-리소스: `wiki://stats`(페이지 통계). **삭제 툴은 의도적으로 없음**(지식 손실·권한 위험 방지).
+리소스: `wiki://stats`. **삭제 툴은 의도적으로 없음**(지식 손실 방지, `status: deprecated` 로 대체).
+모든 쓰기는 `wiki/_meta/journal.md` 에 append-only 로 자동 기록됩니다(감사 추적).
 
-> 왜 도메인 특화 툴인가: 범용 `read_file/write_file` 은 스키마 검증·저널을 우회해 위키 무결성을 깬다.
-> 위 6개 툴은 가드레일(필수필드·slug·중복·updated·저널)을 **강제**한다. (근거: `docs/02_decision_journal.md` Round 4·6)
+### 에이전트 연결 방법
 
-## 4. 에이전트 (편집 / 챗봇)
-
-- **Chatbot Agent (read-only)**: `wiki_search`→`wiki_get` 으로 근거를 찾아 답하고 출처를 링크. 쓰기 금지.
-- **Editor Agent (read-write)**: 위 + `create/update/append` 로 위키 확장. 모든 변경은 저널에 기록.
-- 상세 역할·권한·System Prompt·금지사항은 **`docs/04_agent_spec.md`** 참조.
-
-## 5. 페이지 시각화 & 사용자 기능 (GUI)
-
-`app.py`(Flask)가 제공:
-- **사이드바**: 카테고리(개념/모델/방법/응용) + Glossary 로 그룹화된 페이지 목록.
-- **본문 렌더**: markdown→HTML, `[[위키링크]]`·`(slug.md)` 를 내부 링크로 해석, front-matter 칩 표시.
-- **검색**: 상단 검색창 → `wiki_search` 결과를 사이드바에 표시.
-- **Wiki Chatbot 패널**: 자연어 질문 → 관련 페이지 요약 + 출처 칩(읽기 전용 에이전트 시연).
-
-## 6. 실행 방법 (환경 · 의존성)
-
-### 6.1 환경
-- **OS**: Windows (PowerShell). Python 3.13 기준 검증. (`python` 별칭이 깨진 환경에선 `py` 런처 사용)
-- **Python**: 3.10+ 권장.
-
-### 6.2 설치
+**Claude Code** — 이 저장소를 열면 `.mcp.json`(프로젝트 스코프)이 자동 인식됩니다. 승인만 하면
+에이전트가 위 6툴을 바로 호출할 수 있습니다. 수동 등록 시:
 ```powershell
-cd WikiTool_MCP
-py -m pip install -r requirements.txt
+claude mcp add objdet-wiki -- py tools/mcp_server.py
 ```
 
-### 6.3 웹 GUI(MVP) 실행
-```powershell
-py server/app.py
-# 브라우저에서 http://127.0.0.1:5000  접속
-# (스크린샷용 데모: http://127.0.0.1:5000/demo/02-rt-detr )
-```
-
-### 6.4 MCP 서버 실행
-```powershell
-# (A) stdio: MCP 클라이언트가 자식 프로세스로 구동 (Claude Desktop/Code 등)
-py server/mcp_server.py
-
-# (B) HTTP: 원격/별도 프로세스에서 접속
-py server/mcp_server.py --http     # http://127.0.0.1:8000/mcp
-```
-
-### 6.5 MCP 클라이언트 연결 예 (Claude Desktop `mcpServers`)
+**Claude Desktop** — `claude_desktop_config.json` 에 추가:
 ```json
 {
   "mcpServers": {
     "objdet-wiki": {
       "command": "py",
-      "args": ["C:\\path\\to\\WikiTool_MCP\\server\\mcp_server.py"],
-      "env": { "WIKI_ROOT": "C:\\path\\to\\WikiTool_MCP\\wiki" }
+      "args": ["C:\\절대경로\\WikiTool_MCP\\tools\\mcp_server.py"],
+      "env": { "WIKI_ROOT": "C:\\절대경로\\WikiTool_MCP\\wiki" }
     }
   }
 }
 ```
-> chatbot 전용 세션은 클라이언트 설정에서 read 3툴만 등록해 권한을 강제(`docs/04_agent_spec.md`).
 
-### 6.6 동작 점검(스모크 테스트)
+**HTTP 전송** (원격/별도 프로세스): `py tools/mcp_server.py --http` → `http://127.0.0.1:8000/mcp`
+
+## 5. 하네스 — 에이전트 품질 보증 장치
+
+| 장치 | 파일 | 역할 |
+|---|---|---|
+| 운영지침 | `RULES.md` | 수정 단일 경로(6툴), 삭제 금지, 출처 의무, 저널 append-only, API Key 금지 |
+| 컨텍스트 | `CLAUDE.md` | Claude Code 세션에 자동 로드되는 프로젝트 지도 |
+| **Hook** | `.claude/settings.json` | Write/Edit 직후 `py tools/wiki_core.py --validate` 자동 실행 — 스키마 위반 시 exit 2 로 차단 (확률적 출력에 결정론적 게이트) |
+| **Skill** | `.claude/skills/new-wiki-page/` | 자료 투입 → 페이지 생성 → 검증 → 보고의 고정 절차 |
+| **Subagent** | `.claude/agents/wiki-editor.md` | 대량 통합·메타 정리를 위임받는 편집 전담 에이전트(권한 명세 포함) |
+
+## 6. 검증 방법
+
 ```powershell
-py server/wiki_core.py        # 통계 + 'rt-detr xai' 검색 결과 출력
+py tools/wiki_core.py --validate   # ① 스키마 게이트: checked=N errors=0, exit 0
+py tools/wiki_core.py              # ② 스모크 테스트: 통계 + 'rt-detr xai' 검색 결과
+py tools/app.py                    # ③ 뷰어: http://127.0.0.1:5000 에서 페이지·검색·챗봇 확인
+py tools/mcp_server.py             # ④ MCP 서버: 에러 없이 stdio 대기하면 정상 (Ctrl+C 종료)
 ```
 
-## 7. LLM 백엔드 연결 지점(확장)
+## 7. 설계 노트
 
-GUI 챗봇은 기본적으로 키 없이 동작하는 **retrieval** 방식이다(`app.py: chat_answer`).
-실제 LLM 으로 답변을 생성하려면, `chat_answer` 에서 검색된 페이지를 컨텍스트로 LLM API(또는 MCP 클라이언트)에
-넘기면 된다. **툴 화이트리스트(read 전용)** 는 그대로 유지한다.
-
-## 8. 제출물 매핑
-
-| # | 제출물 | 파일 |
-|---|---|---|
-| ① | 지식 도메인 정의 | `docs/01_knowledge_domain.md` |
-| ② | 의사결정 저널 | `docs/02_decision_journal.md` (+ 런타임 `wiki/_meta/journal.md`) |
-| ③ | PRD/사양 | `docs/03_PRD_spec.md` |
-| ④ | README | `README.md` (이 파일) |
-| ⑤ | MVP 이미지 | `mvp/mvp_screenshot.png`, `mvp/mvp_home.png`, `mvp/mvp_screenshot.pdf` |
-| (보강) | 에이전트 SPEC | `docs/04_agent_spec.md` |
+- **단일 진실 출처**: markdown + YAML front-matter 가 유일한 데이터. `wiki_core.py` 를
+  MCP 서버와 웹 뷰어가 공유하므로 **에이전트가 쓰면 사람 화면에 즉시 반영**됩니다.
+- **API Key 없음**: 챗봇은 위키 검색 기반 retrieval 로 동작(재현성). LLM 연동이 필요하면
+  MCP 클라이언트(Claude Code/Desktop)나 subprocess 경유로 — 코드에 키를 넣지 않습니다(RULES.md 6절).
+- **원문 자료는 git 제외**: `raw/*.pdf` 는 저작권·용량 문제로 커밋되지 않습니다.
+  페이지 front-matter 의 `source.ref` 와 `wiki/_meta/source_index.md` 가 출처를 추적합니다.
+- 설계 의사결정 이력은 `docs/02_decision_journal.md`(append-only) 참조.

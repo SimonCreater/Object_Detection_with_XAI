@@ -9,7 +9,7 @@ created: 2026-06-03
 updated: 2026-06-03
 source:
   - type: pdf
-    ref: "Faster-Rcnn.pdf"
+    ref: "raw/Faster-Rcnn.pdf"
     cite: "Ren, He, Girshick, Sun, Faster R-CNN, arXiv:1506.01497v3 (2016)"
 related:
   - 01-object-detection-overview
@@ -70,5 +70,5 @@ Faster R-CNN은 **two-stage 정확도 기준선**이자 anchor·NMS·후보 단�
 
 ## 참고 / 출처
 
-- 원본 논문: [Faster-Rcnn.pdf](../../Faster-Rcnn.pdf)
+- 원본 논문: [Faster-Rcnn.pdf](../../raw/Faster-Rcnn.pdf)
 - Ren, He, Girshick, Sun, "Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks", arXiv:1506.01497v3, 2016.

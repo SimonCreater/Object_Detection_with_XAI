@@ -278,6 +278,44 @@ def append_page(slug: str, text: str, heading: Optional[str] = None) -> dict:
     return {"slug": slug, "updated": post.metadata["updated"]}
 
 
+def validate() -> dict:
+    """위키 전체 무결성 검증 (Hook/CI 게이트용).
+
+    - 모든 .md 가 front-matter 로 파싱되는가
+    - SCHEMA 필수 필드(REQUIRED_FIELDS)가 있는가
+    - category 가 유효한가, slug 가 kebab-case 인가
+    - related 항목이 실제 페이지로 해석되는가 (실패는 warning)
+    반환: {"ok": bool, "errors": [...], "warnings": [...], "checked": n}
+    """
+    errors: list[str] = []
+    warnings: list[str] = []
+    checked = 0
+    for p in _iter_files():
+        checked += 1
+        rel = f"{p.parent.name}/{p.name}"
+        try:
+            post = frontmatter.load(p, encoding="utf-8")
+        except Exception as e:  # noqa: BLE001 - 어떤 파싱 실패든 보고
+            errors.append(f"{rel}: front-matter 파싱 실패 — {e}")
+            continue
+        meta = post.metadata
+        kind = "glossary" if p.parent.name == "glossary" else "page"
+        # glossary 는 경량 스키마(title/slug/summary), 페이지는 SCHEMA.md 전체 필수
+        required = REQUIRED_FIELDS if kind == "page" else ["title", "slug", "summary"]
+        for f in required:
+            if not meta.get(f):
+                errors.append(f"{rel}: 필수 필드 누락 — {f}")
+        slug = str(meta.get("slug", ""))
+        if slug and not _SLUG_RE.match(slug):
+            errors.append(f"{rel}: slug 형식 위반(kebab-case) — {slug}")
+        if kind == "page" and meta.get("category") not in VALID_CATEGORIES:
+            errors.append(f"{rel}: category 무효 — {meta.get('category')}")
+        for r in (meta.get("related") or []):
+            if _find_path(str(r)) is None:
+                warnings.append(f"{rel}: related 미해석 — {r}")
+    return {"ok": not errors, "errors": errors, "warnings": warnings, "checked": checked}
+
+
 def stats() -> dict:
     """위키 전체 통계 (대시보드/검증용)."""
     items = _all()
@@ -296,6 +334,22 @@ def stats() -> dict:
 
 if __name__ == "__main__":
     import json
+    import sys
+
+    # Windows 콘솔(cp949)에서도 한글/특수문자 출력이 깨지지 않도록 강제
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+    if "--validate" in sys.argv:
+        # Hook/CI 게이트: 스키마 위반이 있으면 exit 2 로 실패시킨다.
+        result = validate()
+        for w in result["warnings"]:
+            print(f"[warn] {w}")
+        for e in result["errors"]:
+            print(f"[FAIL] {e}")
+        print(f"validate: checked={result['checked']} "
+              f"errors={len(result['errors'])} warnings={len(result['warnings'])}")
+        sys.exit(0 if result["ok"] else 2)
+
     print("WIKI_ROOT =", WIKI_ROOT)
     print(json.dumps(stats(), ensure_ascii=False, indent=2))
     print("--- search('rt-detr xai') ---")

@@ -24,7 +24,7 @@
 | **Context** | 검색 상위 페이지의 `핵심` 섹션/요약 |
 | **에러 처리** | 검색 0건 → "관련 페이지를 찾지 못했다" 명시, 환각 금지 |
 
-구현: `server/app.py` 의 `/api/chat` (retrieval). LLM 백엔드 연결 시에도 **툴 화이트리스트는 동일**.
+구현: `tools/app.py` 의 `/api/chat` (retrieval). LLM 백엔드 연결 시에도 **툴 화이트리스트는 동일**.
 
 ---
 
@@ -41,7 +41,7 @@
 | **Context** | 기존 페이지·`source_index`·중복 검사 결과 |
 | **가드레일** | slug kebab-case 검증, category enum 검증, 중복 slug 거부, `updated` 자동 |
 
-구현: `server/mcp_server.py` 의 쓰기 툴 → `wiki_core.create/update/append_page`(검증+저널).
+구현: `tools/mcp_server.py` 의 쓰기 툴 → `wiki_core.create/update/append_page`(검증+저널).
 
 ---
 

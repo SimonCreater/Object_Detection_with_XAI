@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "objdet-wiki": {
+      "command": "py",
+      "args": ["tools/mcp_server.py"]
+    }
+  }
+}
