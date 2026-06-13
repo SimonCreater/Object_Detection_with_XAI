@@ -151,7 +151,7 @@ PAGE_HTML = """
 </style></head><body>
 <header>
   <span class="logo">🔎 Object Detection LLM Wiki</span>
-  <span class="tag">RT-DETR · XAI(GradCAM++/AttnLRP/VPS) · 표현 기하 · 반도체 결함검출</span>
+  <span class="tag">Object Detection(RT-DETR/DETR/Faster R-CNN) · XAI(GradCAM++/AttnLRP/VPS) · 표현 기하 해석</span>
   <span class="mcp">● MCP tools: wiki_search · wiki_get · wiki_list · wiki_create · wiki_update · wiki_append</span>
 </header>
 <div class="layout">
@@ -181,8 +181,8 @@ PAGE_HTML = """
     {% else %}
       <article>
         <h1>Object Detection LLM Wiki</h1>
-        <div class="summary">RT-DETR(CNN-Transformer 하이브리드 검출기)과 XAI(GradCAM++/AttnLRP/Visual Precision Search)·표현 기하 해석을
-        반도체 이미지 결함 검출에 적용하는 지식 베이스. 왼쪽에서 페이지를 고르거나, 오른쪽 챗봇에게 질문하세요.</div>
+        <div class="summary">객체검출 모델(RT-DETR·DETR·Faster R-CNN)의 작동 원리와, 그 판단 근거를 XAI(GradCAM++/AttnLRP/Visual Precision Search)·표현 기하 해석으로
+        검증하는 "설명가능한 객체검출" 지식 베이스. 왼쪽에서 페이지를 고르거나, 오른쪽 챗봇에게 질문하세요.</div>
         <p>이 GUI 와 MCP 서버는 같은 <code>wiki_core</code> 를 공유합니다 —
         에이전트가 MCP 툴로 읽고 쓰는 내용이 곧 이 화면의 내용입니다.</p>
         <h2>수록 페이지 {{stats.pages}}개 · 용어 {{stats.glossary}}개</h2>
@@ -194,8 +194,8 @@ PAGE_HTML = """
   <section class="chat">
     <div class="hd">💬 Wiki Chatbot <small>read-only 에이전트 · wiki_search → wiki_get 사용</small></div>
     <div class="log" id="log">
-      <div class="msg a">안녕하세요! RT-DETR·XAI·반도체 결함검출에 대해 물어보세요.
-예) "RT-DETR이 왜 NMS가 필요 없어?", "반도체 결함 검출에 어떤 XAI를 써?"</div>
+      <div class="msg a">안녕하세요! 객체검출 모델과 XAI에 대해 물어보세요.
+예) "RT-DETR이 왜 NMS가 필요 없어?", "검출 결과를 어떤 XAI로 검증해?"</div>
       {% if seed_q %}
       <div class="msg u">{{seed_q}}</div>
       <div class="msg a">{{ seed_a_html | safe }}
@@ -261,7 +261,7 @@ def demo(slug):
     except KeyError:
         abort(404)
     groups, glossary = sidebar_groups()
-    q = request.args.get("q", "반도체 결함 검출에 어떤 XAI를 써?")
+    q = request.args.get("q", "검출 결과를 어떤 XAI로 검증해?")
     ans = chat_answer(q)
     seed_a_html = markdown.markdown(ans["answer"], extensions=_MD_EXT)
     return render_template_string(PAGE_HTML, page=p, body_html=md_to_html(p["body"]),

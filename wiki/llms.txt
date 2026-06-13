@@ -1,6 +1,6 @@
-# Object Detection LLM Wiki — RT-DETR · XAI · 반도체 결함검출
+# Object Detection & XAI LLM Wiki — 설명가능한 객체검출 연구 지식
 
-> RT-DETR(CNN-Transformer 하이브리드 검출기)과 XAI(GradCAM++/AttnLRP/Visual Precision Search)·표현 기하 해석을 반도체 이미지 결함 검출에 적용하는 연구 지식 베이스. MCP Wiki Tool을 통해 LLM 에이전트가 질의·갱신한다.
+> 객체검출 모델(RT-DETR·DETR·Faster R-CNN)의 작동 원리와, 그 판단 근거를 XAI(GradCAM++/AttnLRP/Visual Precision Search)·표현 기하 해석으로 검증하는 "설명가능한 객체검출" 연구 지식 베이스. 반도체 결함검출 등은 응용 사례. MCP Wiki Tool을 통해 LLM 에이전트가 질의·갱신한다.
 
 ## 운영 메타
 
@@ -17,7 +17,7 @@
 
 ## Model
 
-- [02. RT-DETR](pages/02-rt-detr.md): CNN-Transformer 하이브리드 실시간 검출기(본 연구 핵심 모델)
+- [02. RT-DETR](pages/02-rt-detr.md): CNN-Transformer 하이브리드 실시간 검출기(핵심 검출 모델)
 - [09. Faster R-CNN과 Two-stage 검출](pages/09-faster-rcnn-two-stage.md): RPN·anchor·NMS 기준선
 
 ## Method (XAI)
@@ -29,7 +29,7 @@
 
 ## Application
 
-- [08. 반도체 이미지 결함 검출](pages/08-semiconductor-defect-detection.md): RT-DETR + 멀티 XAI 감사 워크플로우
+- [08. 반도체 이미지 결함 검출](pages/08-semiconductor-defect-detection.md): 멀티 XAI 감사 워크플로우의 적용 사례(RT-DETR 적용 예)
 
 ## Glossary
 

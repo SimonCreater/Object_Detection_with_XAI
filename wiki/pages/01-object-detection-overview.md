@@ -9,7 +9,7 @@ created: 2026-06-03
 updated: 2026-06-03
 source:
   - type: domain-note
-    ref: "RT-DETR 기반 반도체 결함 검출 연구 노트"
+    ref: "객체검출·XAI 연구 노트"
 related:
   - 02-rt-detr
   - 04-xai-for-object-detection

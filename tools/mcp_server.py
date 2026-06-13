@@ -27,7 +27,7 @@ import wiki_core as core
 mcp = FastMCP(
     name="objdet-wiki",
     instructions=(
-        "RT-DETR · XAI(GradCAM++/AttnLRP/Visual Precision Search) · 표현 기하 해석 · 반도체 결함검출 도메인의 LLM Wiki 툴. "
+        "Object Detection(RT-DETR/DETR/Faster R-CNN) · XAI(GradCAM++/AttnLRP/Visual Precision Search) · 표현 기하 해석 도메인의 LLM Wiki 툴. "
         "읽기는 wiki_search→wiki_get 순으로, 쓰기는 wiki_create/update/append 를 쓴다. "
         "쓰기 작업은 자동으로 _meta/journal.md 에 기록된다."
     ),

@@ -92,9 +92,9 @@ L(X̂, Ŷ, Y) = L_box(b̂, b) + L_cls(U(X̂), ĉ, c)
 
 다른 DETR과 마찬가지로 **소형 객체(AP_S)**가 최강 YOLO보다 약하다 — R50은 L급 최고(YOLOv8-L) 대비 AP_S 0.5%p 낮고, R101은 X급 최고(YOLOv7-X) 대비 0.9%p 낮다(논문 §6). 반도체 미세 결함처럼 작은 타깃이 많은 도메인에선 이 점을 보완 설계해야 한다.
 
-### 본 연구에서의 사용
+### 설명가능 검출에서의 위치
 
-반도체 이미지 결함 검출의 백본 모델로 RT-DETR을 사용한다. NMS-free 특성 덕에 밀집된 결함에서 중복 억제로 인한 누락이 줄고, 디코더 레이어 조절로 인라인 throughput에 맞출 수 있다. 단 attention은 블랙박스이므로 "왜 이 영역을 결함으로 봤는가"를 [[gradcam-plus-plus]]·[[lrp]] 같은 XAI로 검증한다 → [[xai-for-object-detection]].
+RT-DETR은 본 위키에서 다루는 핵심 검출 모델이다. NMS-free 특성 덕에 밀집 객체에서 중복 억제로 인한 누락이 줄고, 디코더 레이어 조절로 throughput을 맞출 수 있다. 단 attention은 블랙박스이므로 "왜 이 영역을 객체로 봤는가"를 [[gradcam-plus-plus]]·[[lrp]] 같은 XAI로 검증한다 → [[xai-for-object-detection]]. (밀집 결함이 많은 반도체 검사 등은 이 특성이 유효한 응용 사례 → [[semiconductor-defect-detection]].)
 
 ### XAI 적용 시 유의점
 

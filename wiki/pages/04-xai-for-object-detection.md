@@ -50,7 +50,7 @@ XAI(eXplainable AI) 방법은 크게 세 축으로 나뉜다.
 - **AttnLRP** — 출력 점수를 attention 단계를 통과해 입력·잠재 뉴런까지 보존적으로 분해(얼마나).
 - **Visual Precision Search** — 모델 내부 없이 "검출을 만든 최소 영역"을 탐색해 오검출 원인 진단(블랙박스 검증).
 
-세 결과를 교차 검증해 반도체 결함 판단의 신뢰도를 높인다. 표현 자체의 기하가 어떻게 형성·변형되는지는 [[manifold-geometry-interpretability]]·[[pruning-robustness-geometry]]로 보완한다 → [[semiconductor-defect-detection]].
+세 결과를 교차 검증해 검출 판단의 신뢰도를 높인다. 표현 자체의 기하가 어떻게 형성·변형되는지는 [[manifold-geometry-interpretability]]·[[pruning-robustness-geometry]]로 보완한다. (이 멀티-XAI 감사 전략을 적용한 응용 예: [[semiconductor-defect-detection]].)
 
 ## 관련 페이지
 
